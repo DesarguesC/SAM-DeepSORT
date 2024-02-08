@@ -57,12 +57,6 @@ def main(_argv):
     metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
     # initialize tracker
     tracker = Tracker(metric)
-
-    # load configuration for object detector
-    # config = ConfigProto()
-    # config.gpu_options.allow_growth = True
-    # session = InteractiveSession(config=config)
-    # STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config(FLAGS)
     input_size = FLAGS.size
     video_path = FLAGS.video
     
@@ -107,11 +101,6 @@ def main(_argv):
 
         # run detections on tflite if flag is set
         masks = mask_generator.generate(frame)
-        
-        # if frame_num%100==1 :
-        #     print(f'\nboxes = {boxes}\nscores = {scores}\nclasses = {classes}\nvalid_detections = {valid_detections}')
-        #     print(f'boxes: {type(boxes)}\nscores: {type(scores)}\nclasses: {type(classes)}\nvalid_detections: {type(valid_detections)}')
-
         # convert data to numpy arrays and slice out unused elements
         num_objects = len(masks) # -> num
         bboxes = np.array([mask['bbox'] for mask in masks]) # shape: (num_objects, 3)
@@ -121,15 +110,6 @@ def main(_argv):
 
         # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, width, height
         original_h, original_w, _ = frame.shape
-        # print('1'*15)
-        # for box in bboxes:
-        #     print(f'box = {box}')
-
-        # bboxes = utils.format_boxes(bboxes, original_h, original_w)
-        # print('2'*15)
-        # for box in bboxes:
-        #     print(f'box = {box}')
-
 
         # loop through objects and use class index to get class name, allow only classes in allowed_classes list
         names = []
