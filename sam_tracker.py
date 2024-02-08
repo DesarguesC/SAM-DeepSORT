@@ -115,27 +115,32 @@ def main(_argv):
         # convert data to numpy arrays and slice out unused elements
         num_objects = len(masks) # -> num
         bboxes = np.array([mask['bbox'] for mask in masks]) # shape: (num_objects, 3)
-        print(f'\nbboxes.shape = {bboxes.shape}')
+        # print(f'\nbboxes.shape = {bboxes.shape}')
         scores = np.array([mask['stability_score'] for mask in masks])
-        print(f'scores.shape = {scores.shape}')
+        # print(f'scores.shape = {scores.shape}')
 
         # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, width, height
         original_h, original_w, _ = frame.shape
-        # print(1)
-        bboxes = utils.format_boxes(bboxes, original_h, original_w)
-        # print(2)
+        # print('1'*15)
+        # for box in bboxes:
+        #     print(f'box = {box}')
+
+        # bboxes = utils.format_boxes(bboxes, original_h, original_w)
+        # print('2'*15)
+        # for box in bboxes:
+        #     print(f'box = {box}')
+
 
         # loop through objects and use class index to get class name, allow only classes in allowed_classes list
         names = []
         names = ['no-lable' for i in range(len(masks))]
         names = np.array(names)
-        print(f'names = {names}')
         count = len(names)
-        print(1)
+        # print(1)
         features = encoder(frame, bboxes)
         if bboxes.shape[0] != num_objects:
             print('????')
-        print(2)
+        # print(2)
         
         """
         TODO:
